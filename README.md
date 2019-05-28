@@ -3,4 +3,6 @@ Electroencephalographic Neuromuscular Facial Expression Recognition Interface (E
 
 ## Contributors:
 * Kevin Cui ([kevinjycui](https://github.com/kevinjycui))
+   * Software
 * Jordan Frankel
+   * Hardware
