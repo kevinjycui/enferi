@@ -23,7 +23,7 @@ int lPower;
 #define B A1
 #define C A2
 #define D A3
-int state = 0;
+
 RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false, 64);
 
 
@@ -31,70 +31,116 @@ void setup() {
   matrix.begin();
   Serial.begin(9600);
 }
-void loop() {
-
-  for (int i = 0; i < 5; i++) {
-    eyeData = Serial.read();
-    uData = Serial.read();
-    uPower = Serial.read();
-    lData = Serial.read();
-    lPower = Serial.read();
-  }
-  if (state == 0) {
-    matrix.drawLine(55, 21, 55, 27, matrix.Color333(7, 7, 0)); // right eyebrowup
-    matrix.drawLine(55, 4, 55, 10, matrix.Color333(7, 7, 0)); // left eyebrowup
-    matrix.drawLine(44, 5, 44, 9, matrix.Color333(0, 0, 7)); // left eyelid
-    matrix.drawLine(43, 4, 43, 10, matrix.Color333(0, 0, 7));
-    matrix.drawLine(44, 22, 44, 26, matrix.Color333(0, 0, 7)); // right eyelid
-    matrix.drawLine(43, 21, 43, 27, matrix.Color333(0, 0, 7));
-    matrix.drawCircle(40, 21, 1, matrix.Color333(7, 7, 0)); //look left_right
-    matrix.drawCircle(40, 4, 1, matrix.Color333(7, 7, 0)); //look left_left
-    matrix.drawRect(27, 15, 10, 2, matrix.Color333(7, 0, 0)); // nose
-    matrix.drawLine(15, 8, 15, 23, matrix.Color333(0, 0, 7)); //  mouth
-    matrix.drawCircle(40, 7, 5, matrix.Color333(0, 0, 7)); //left eye
-    matrix.drawCircle(40, 24, 5, matrix.Color333(0, 0, 7)); //right eye
-    delay(1000);
-    matrix.drawLine(55, 21, 55, 27, matrix.Color333(0, 0, 0)); // right eyebrowup
-    matrix.drawLine(55, 4, 55, 10, matrix.Color333(0, 0, 0)); // left eyebrowup
-    matrix.drawCircle(40, 21, 1, matrix.Color333(0, 0, 0)); //look left_right
-    matrix.drawCircle(40, 4, 1, matrix.Color333(0, 0, 0)); //look left_left
-    state = 1;
-  }
-  if (state == 1) {
-    matrix.drawCircle(40, 24, 5, matrix.Color333(0, 0, 7)); //right eye
-    matrix.drawCircle(40, 24, 1, matrix.Color333(0, 7, 0)); //right pupil
-    matrix.drawCircle(40, 7, 5, matrix.Color333(0, 0, 7)); //left eye
-    matrix.drawCircle(40, 7, 1, matrix.Color333(0, 7, 0)); //left pupil
-    matrix.drawRect(27, 15, 10, 2, matrix.Color333(7, 0, 0)); // nose
-     matrix.drawLine(15, 8, 15, 23, matrix.Color333(0, 0, 0)); //  mouth
-    matrix.drawCircle(15, 15, 8, matrix.Color333(7, 0, 0)); //left pupil
-    matrix.fillRect(16, 7 ,10, 17, matrix.Color333(0, 0, 0)); //smile
-    matrix.fillCircle(40, 7, 4, matrix.Color333(0, 0, 7)); //left eye
-    matrix.fillCircle(40, 24, 4, matrix.Color333(0, 0, 7)); //right eye
-
-    delay(1000);
-    matrix.drawCircle(40, 24, 1, matrix.Color333(0, 0, 0)); //right pupil
-    matrix.drawCircle(40, 7, 1, matrix.Color333(0, 0, 0)); //left pupil
-
-
-    state = 2;
-  }
-  if (state == 2) {
-    matrix.drawLine(44, 5, 44, 9, matrix.Color333(0, 0, 7)); // left eyelid
-    matrix.drawLine(43, 4, 43, 10, matrix.Color333(0, 0, 7));
-    matrix.drawLine(44, 22, 44, 26, matrix.Color333(0, 0, 7)); // right eyelid
-    matrix.drawLine(43, 21, 43, 27, matrix.Color333(0, 0, 7));
-    matrix.drawCircle(40, 27, 1, matrix.Color333(7, 7, 0)); //look right_right
-    matrix.drawCircle(40, 10, 1, matrix.Color333(7, 7, 0)); //look right_left
-    matrix.drawLine(15, 8, 15, 23, matrix.Color333(0, 0, 0)); //  mouth
-    matrix.drawLine(49, 4, 49, 10, matrix.Color333(7, 0, 0)); // left eyebrow
-    matrix.drawLine(49, 21, 49, 27, matrix.Color333(7, 0, 0)); // right eyebrow
-    matrix.drawRect(27, 15, 10, 2, matrix.Color333(7, 0, 0)); // nose
-    matrix.drawCircle(40, 7, 5, matrix.Color333(0, 0, 7)); //left eye
-    matrix.drawCircle(40, 24, 5, matrix.Color333(0, 0, 7)); //right eye
-    matrix.fillCircle(40, 7, 5, matrix.Color333(0, 0, 0)); //left eye
-    matrix.fillCircle(40, 24, 5, matrix.Color333(0, 0, 0)); //right eye
-  }
+void eyeReset() {
+  matrix.drawLine(44, 5, 44, 9, matrix.Color333(0, 0, 7)); // left eyelid
+  matrix.drawLine(43, 4, 43, 10, matrix.Color333(0, 0, 7));
+  matrix.drawLine(44, 22, 44, 26, matrix.Color333(0, 0, 7)); // right eyelid
+  matrix.drawLine(43, 21, 43, 27, matrix.Color333(0, 0, 7));
+  matrix.drawCircle(40, 7, 5, matrix.Color333(0, 0, 7)); //left eye
+  matrix.drawCircle(40, 24, 5, matrix.Color333(0, 0, 7)); //right eye
+}
+void eyeNeutral() {
+  matrix.drawLine(44, 5, 44, 9, matrix.Color333(0, 0, 7)); // left eyelid
+  matrix.drawLine(43, 4, 43, 10, matrix.Color333(0, 0, 7));
+  matrix.drawLine(44, 22, 44, 26, matrix.Color333(0, 0, 7)); // right eyelid
+  matrix.drawLine(43, 21, 43, 27, matrix.Color333(0, 0, 7));
+  matrix.drawCircle(40, 7, 5, matrix.Color333(0, 0, 7)); //left eye
+  matrix.drawCircle(40, 24, 5, matrix.Color333(0, 0, 7)); //right eye
+  matrix.drawCircle(40, 24, 1, matrix.Color333(0, 7, 0)); //right pupil
+  matrix.drawCircle(40, 7, 1, matrix.Color333(0, 7, 0)); //left pupil
+}
+void eyeBlink() {
+  matrix.fillCircle(40, 7, 4, matrix.Color333(0, 0, 7)); //left eye
+  matrix.fillCircle(40, 24, 4, matrix.Color333(0, 0, 7)); //right eye
+}
+void rightWink() {
+  matrix.fillCircle(40, 24, 4, matrix.Color333(0, 0, 7)); //right eye
+  matrix.drawCircle(40, 7, 1, matrix.Color333(0, 7, 0)); //left pupil
+}
+void leftWink() {
+  matrix.fillCircle(40, 7, 4, matrix.Color333(0, 0, 7)); //left eye
+  matrix.drawCircle(40, 24, 1, matrix.Color333(0, 7, 0)); //right pupil
+}
+void eyeLeft() {
+  matrix.drawLine(44, 5, 44, 9, matrix.Color333(0, 0, 7)); // left eyelid
+  matrix.drawLine(43, 4, 43, 10, matrix.Color333(0, 0, 7));
+  matrix.drawLine(44, 22, 44, 26, matrix.Color333(0, 0, 7)); // right eyelid
+  matrix.drawLine(43, 21, 43, 27, matrix.Color333(0, 0, 7));
+  matrix.drawCircle(40, 21, 1, matrix.Color333(7, 7, 0)); //look left_right
+  matrix.drawCircle(40, 4, 1, matrix.Color333(7, 7, 0)); //look left_left
 
 }
- 
+void eyeRight() {
+  matrix.drawLine(44, 5, 44, 9, matrix.Color333(0, 0, 7)); // left eyelid
+  matrix.drawLine(43, 4, 43, 10, matrix.Color333(0, 0, 7));
+  matrix.drawLine(44, 22, 44, 26, matrix.Color333(0, 0, 7)); // right eyelid
+  matrix.drawLine(43, 21, 43, 27, matrix.Color333(0, 0, 7));
+  matrix.drawCircle(40, 21, 1, matrix.Color333(0, 0, 0)); //look left_right
+  matrix.drawCircle(40, 4, 1, matrix.Color333(0, 0, 0)); //look left_left
+}
+void mouthNeutral() {
+  matrix.drawLine(15, 8, 15, 23, matrix.Color333(7, 0, 0)); //  mouth
+
+}
+void smile() {
+  matrix.fillRect(16, 7 , 10, 17, matrix.Color333(0, 0, 0)); //smile
+
+}
+void eyebrowNeutral() {
+  matrix.drawLine(49, 4, 49, 10, matrix.Color333(7, 0, 0)); // left eyebrow
+  matrix.drawLine(49, 21, 49, 27, matrix.Color333(7, 0, 0)); // right eyebrow
+}
+void eyebrowDown(int power) {
+  matrix.drawLine(49 + power, 4, 49 + power, 10, matrix.Color333(7, 0, 0)); // left eyebrow
+  matrix.drawLine(49 + power, 21, 49 + power, 27, matrix.Color333(7, 0, 0)); // right eyebrow
+}
+void eyebrowUp(int power) {
+  matrix.drawLine(49 - power, 4, 49 - power, 10, matrix.Color333(7, 0, 0)); // left eyebrow
+  matrix.drawLine(49 - power, 21, 49 - power, 27, matrix.Color333(7, 0, 0)); // right eyebrow
+}
+void Nose() {
+  matrix.drawRect(27, 15, 10, 2, matrix.Color333(7, 0, 0)); // nose
+}
+void loop() {
+
+  eyeData = Serial.read();
+  uData = Serial.read();
+  uPower = Serial.read();
+  lData = Serial.read();
+  lPower = Serial.read();
+
+  matrix.fillScreen(0);
+  Nose();
+  eyeReset();
+  if (eyeData == '0') {
+    eyeNeutral();
+  }
+  else if (eyeData == '1') {
+    eyeBlink();
+  }
+  else if (eyeData == '2') {
+    leftWink();
+  }
+  else if (eyeData == '3') {
+    rightWink();
+  }
+
+  if (uData == '0') {
+    eyebrowNeutral();
+  }
+  else if (uData == '1') {
+    eyebrowUp((int)uPower);
+  }
+  else if (uData == '2'){
+    eyebrowDown((int)uPower);
+  }
+  if (lData == '0'){
+    mouthNeutral();
+  }
+  else if (lData == '1'){
+    smile();
+  }
+
+  delay(500);
+
+}
