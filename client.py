@@ -1,14 +1,10 @@
-mport serial
+import serial
 import json
 from websocket import create_connection
 import ssl
 import time
 import os
 import sys
-import contextlib
-from loading_art import upper_img, eye_img, lower_img
-with contextlib.redirect_stdout(None):
-    import pygame
 
 os.environ["SDL_VIDEO_CENTERED"] = "1"
 receivedData = create_connection("wss://emotivcortex.com:54321", sslopt={"cert_reqs": ssl.CERT_NONE})
@@ -70,23 +66,33 @@ def get_value():
 
 setup()
 
-exit_flag = False
-
 val_dict = {
     'neutral': 0,
     'blink': 1,
     'winkL': 2,
     'winkR': 3,
-    'suprise': 1,
+    'lookL': 4,
+    'lookR': 5,
+    'surprise': 1,
     'frown': 2,
     'smile': 1,
-    'laugh': 1,
+    'laugh': 2,
    } 
 
-while not exit_flag and get_value()!=-1:
+while True:
+
+    start_time = time.time()
     data = get_value()
-    for d in data:
-        if d in val_dict:
-            ser.write(val_dict[d].encode())
-        else:
-            ser.write(0.encode())
+    print(data)
+    end_time = time.time()
+    if data!=-1:
+        eyeData = str(val_dict[data[0]])
+        uData = str(val_dict[data[1]])
+        lData = str(val_dict[data[3]])
+        ser.write(eyeData.encode())
+        ser.write(uData.encode())
+        ser.write(lData.encode())
+    time.sleep(1-(end_time-start_time))
+        
+ser.close()
+print('Terminated')
