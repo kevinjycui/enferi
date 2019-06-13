@@ -6,12 +6,6 @@
  - Kevin Cui ([kevinjycui](https://github.com/kevinjycui))
  - Jordan Frankel ([jordanfrankel](https://github.com/jordanfrankel))
 
-**TEJ3M1** 
-
-Mrs. Grigorova 
-
-June 13th, 2019 
-
 ## Description
 The objective is to use an LED matrix that successfully manages to replicate facial expressions. This will be done by using EEG facial expression recognition technology to interpret the facial expressions and to send them to the matrix to be displayed. The EEG headband uses 5 electrodes to detect electric neurotransmission signals caused by the firing of neurons to interpret the facial expressions expressed. The matrix then takes the signals from Python and Arduino (using JSON-RPC to communicate between the EEG and Python; using the serial port to communicate between Python and Arduino) to draw corresponding movements.
 
