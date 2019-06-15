@@ -6,7 +6,6 @@
 #include <Adafruit_SPITFT_Macros.h>
 #include <gfxfont.h>
 
-
 int matrixW = 64;
 int matrixH = 31;
 
@@ -28,7 +27,7 @@ RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false, 64);
 
 void setup() {
   matrix.begin();
-  Serial.begin(9600);
+  Serial.begin(14400);
 }
 void eyeReset() {
   matrix.drawLine(44, 5, 44, 9, matrix.Color333(0, 0, 7)); // left eyelid
@@ -100,10 +99,15 @@ void Nose() {
   matrix.drawRect(27, 15, 10, 2, matrix.Color333(7, 0, 0)); // nose
 }
 void loop() {
-
-  eyeData = Serial.read();
-  uData = Serial.read();
-  lData = Serial.read();
+  if (Serial.available() > 0) {
+    eyeData = Serial.read();
+  }
+  if (Serial.available() > 0) {
+    uData = Serial.read();
+  }
+  if (Serial.available() > 0) {
+    lData = Serial.read();
+  }
 
   matrix.fillScreen(0);
   Nose();
@@ -150,7 +154,5 @@ void loop() {
     mouthNeutral();
     smile();
   }
-
-  delay(1000);
-
+  
 }
