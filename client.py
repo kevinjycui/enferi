@@ -80,11 +80,8 @@ val_dict = {
    } 
 
 while True:
-
-    start_time = time.time()
     data = get_value()
     print(data)
-    end_time = time.time()
     if data!=-1:
         eyeData = str(val_dict[data[0]])
         uData = str(val_dict[data[1]])
@@ -92,7 +89,7 @@ while True:
         ser.write(eyeData.encode())
         ser.write(uData.encode())
         ser.write(lData.encode())
-    time.sleep(1-(end_time-start_time))
+    time.sleep(1)
         
 ser.close()
 print('Terminated')
