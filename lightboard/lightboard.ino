@@ -145,5 +145,5 @@ void loop() {
     mouthNeutral();
     smile();
   }
-  
+  delay(1000); //delay for smooth animation
 }
