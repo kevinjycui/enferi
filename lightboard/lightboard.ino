@@ -1,21 +1,18 @@
-#include <gamma.h>
-#include <RGBmatrixPanel.h>
-
-#include <Adafruit_GFX.h>
+#include <gamma.h>//include the RGB Matrix Panel libraries
+#include <RGBmatrixPanel.h> 
+#include <Adafruit_GFX.h> 
 #include <Adafruit_SPITFT.h>
 #include <Adafruit_SPITFT_Macros.h>
 #include <gfxfont.h>
 
-int matrixW = 64;
-int matrixH = 31;
+int matrixW = 64; //width of matrix board
+int matrixH = 31; //height of matrix board
 
-int eyeData;
-int uData;
-int uPower;
-int lData;
-int lPower;
+int eyeData; //eye expression identifier
+int uData; //upper facial expression identifier
+int lData; //lower facial expression identifier
 
-#define CLK 11
+#define CLK 11 //define pins for matrix
 #define LAT 10
 #define OE 9
 #define A A0
@@ -23,11 +20,11 @@ int lPower;
 #define C A2
 #define D A3
 
-RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false, 64);
+RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false, 64); //declare a matrix panel
 
 void setup() {
-  matrix.begin();
-  Serial.begin(14400);
+  matrix.begin(); //initialize matrix
+  Serial.begin(14400); //initialize serial port
 }
 void eyeReset() {
   matrix.drawLine(44, 5, 44, 9, matrix.Color333(0, 0, 7)); // left eyelid
@@ -99,20 +96,15 @@ void Nose() {
   matrix.drawRect(27, 15, 10, 2, matrix.Color333(7, 0, 0)); // nose
 }
 void loop() {
-  if (Serial.available() > 0) {
-    eyeData = Serial.read();
-  }
-  if (Serial.available() > 0) {
-    uData = Serial.read();
-  }
-  if (Serial.available() > 0) {
-    lData = Serial.read();
-  }
+  eyeData = Serial.read(); //get data for expressions
+  uData = Serial.read();
+  lData = Serial.read();
 
-  matrix.fillScreen(0);
-  Nose();
-  eyeReset();
+  matrix.fillScreen(0); //clear screen
+  Nose(); //draw nose
+  eyeReset(); //reset eyes
 
+  //check received byte and assign to corresponding expression animation, then draw
   if (eyeData == '0') {
     eyeNeutral();
   }
@@ -131,7 +123,6 @@ void loop() {
   else if (eyeData == '5') {
     eyeLeft();
   }
-
   if (uData == '0') {
     eyebrowNeutral();
   }
